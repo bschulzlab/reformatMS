@@ -2,8 +2,8 @@ package main
 
 import (
 	"flag"
-	"github.com/noatgnu/reformatMS/fileHandler"
-	"github.com/noatgnu/reformatMS/input"
+	"github.com/bschulzlab/reformatMS/fileHandler"
+	"github.com/bschulzlab/reformatMS/input"
 	"log"
 	"os"
 	"strconv"
