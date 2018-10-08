@@ -1,15 +1,15 @@
 package main
 
 import (
+	"bufio"
 	"flag"
+	"fmt"
 	"github.com/bschulzlab/reformatMS/fileHandler"
 	"github.com/bschulzlab/reformatMS/input"
 	"log"
 	"os"
 	"strconv"
 	"strings"
-	"bufio"
-	"fmt"
 )
 
 var swath = flag.String("ion", "", "SWATH Ion File")
@@ -38,15 +38,26 @@ func main() {
 	}
 
 	writer := bufio.NewWriter(o)
-	writer.WriteString("ProteinName,PeptideSequence,PrecursorCharge,FragmentIon,ProductCharge,IsotopeLabelType,Condition,BioReplicate,Run,Intensity\n")
+	_, err = writer.WriteString("ProteinName,PeptideSequence,PrecursorCharge,FragmentIon,ProductCharge,IsotopeLabelType,Condition,BioReplicate,Run,Intensity\n")
+	if err != nil {
+		log.Panic(err)
+	}
 	outputChan := make(chan string)
 	go ProcessIons(outputChan, swathFile, fdrMap, samples, *ignoreBlank)
 	for r := range outputChan {
-		writer.WriteString(r)
+		_, err = writer.WriteString(r)
+		if err != nil {
+			log.Panic(err)
+		}
 	}
-	writer.Flush()
-	o.Close()
-
+	err = writer.Flush()
+	if err != nil {
+		log.Panic(err)
+	}
+	err = o.Close()
+	if err != nil {
+		log.Panic(err)
+	}
 	log.Println("Completed.")
 }
 
