@@ -3,10 +3,10 @@ package input
 import (
 	"bufio"
 	"fmt"
-	"log"
 	"os"
 	"path/filepath"
 	"strings"
+	"log"
 )
 
 func Input(message string) (filename string, err error) {
